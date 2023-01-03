@@ -1,9 +1,10 @@
-FROM python:3.9.6
+FROM python:3.10-slim-bullseye
 
-ENV REDIS_HOST=redis-18330.c289.us-west-1-2.ec2.cloud.redislabs.com
-ENV REDIS_USERNAME=default
-ENV REDIS_PASSWORD=YSapXsE2qWYiE3f1UThOVfveQq7FSucQ
-
+ENV REDIS_HOST=""
+ENV REDIS_USERNAME=""
+ENV REDIS_PASSWORD=""
+ENV REDIS_CHANNEL=""
+ENV SENTRY_TOKEN=""
 
 COPY . .
 RUN pip install -r requirements.txt

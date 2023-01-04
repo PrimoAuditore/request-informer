@@ -11,7 +11,6 @@ REDIS_PASSWORD = os.environ["REDIS_PASSWORD"]
 REDIS_CHANNEL = os.environ["REDIS_CHANNEL"]
 SENTRY_DSN = os.environ["SENTRY_DSN"]
 
-print(os.environ)
 
 sentry_sdk.init(
     dsn=SENTRY_DSN,
@@ -40,15 +39,14 @@ def subscribe_channel():
     return pubsub
 
 
-def get_system_webhook(system_id):
+def get_system_webhook(system_id, key):
     con = get_redis_con()
-    return con.get("system-webhook:" + str(system_id))
+    return con.hget("system-webhooks:" + str(system_id), key)
 
 
 def parse_log(json_log):
     print(json_log)
     log = MessageLog()
-    print(json_log["origin"])
     log.origin = json_log["origin"]
     log.timestamp = json_log["timestamp"]
     log.phone_number = json_log["phone_number"]
@@ -62,8 +60,16 @@ def execute_request(log, webhook):
     payload = {'origin': log.origin, 'timestamp': log.timestamp, 'destination_systems': log.destination_systems,
                'phone_number': log.phone_number, 'register_id': log.register_id}
 
+    headers = {'Content-Type': 'application/json'}
+    print(webhook)
+
     try:
-        requests.post(webhook, data=payload)
+        r = requests.post(webhook, headers=headers, json=payload)
+
+        print(r.text)
+        print(r.status_code)
+        if not r.ok:
+            sentry_sdk.capture_message("Request couldnt be completed", "ERROR")
     except Exception as e:
         sentry_sdk.capture_exception(e)
 
@@ -72,8 +78,16 @@ def message_handler(log):
     # If it's a user sent message
     if log.origin == "INCOMING":
         for system in log.destination_systems:
-            webhook = get_system_webhook(system)
+            webhook = get_system_webhook(system, "incoming")
+            print(webhook)
+            if webhook is not None:
+                execute_request(log, webhook)
 
+    # If it's an internal sent message
+    elif log.origin == "OUTGOING":
+        for system in log.destination_systems:
+            webhook = get_system_webhook(system, "outgoing")
+            print(webhook)
             if webhook is not None:
                 execute_request(log, webhook)
 

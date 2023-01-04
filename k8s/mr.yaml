@@ -20,11 +20,11 @@ spec:
           imagePullPolicy: Always
           image: eziotobioli/request-informer:mr-1
           env:
-            - name: REDIS_URL
+            - name: REDIS_HOST
               valueFrom:
                 secretKeyRef:
                   name: request-informer-env
-                  key: REDIS_URL
+                  key: REDIS_HOST
             - name: REDIS_USERNAME
               valueFrom:
                 secretKeyRef:

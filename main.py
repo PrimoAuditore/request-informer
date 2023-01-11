@@ -77,6 +77,7 @@ def message_handler(log):
         for system in log.destination_systems:
             webhook = get_system_webhook(system, "incoming")
             print(webhook)
+            print("Incoming request received ofr system " + str(system))
             if webhook is not None:
                 print("Sending incoming request to system " + str(system) + " to webhook: " + str(webhook))
                 execute_request(log, webhook)
@@ -85,14 +86,16 @@ def message_handler(log):
     elif log.origin == "OUTGOING":
         for system in log.destination_systems:
             webhook = get_system_webhook(system, "outgoing")
-            print(webhook)
+            print("Outgoing request received ofr system " + str(system))
             if webhook is not None:
                 print("Sending outgoin request to system " + str(system) + " to webhook: " + str(webhook))
                 execute_request(log, webhook)
 
 
+print("Initiating subscriber")
 sub_con = subscribe_channel()
 
+print("Starting to receive messages")
 while True:
     message_log = sub_con.get_message()
     if message_log is not None and message_log["type"] == "pmessage":

@@ -61,13 +61,10 @@ def execute_request(log, webhook):
                'phone_number': log.phone_number, 'register_id': log.register_id}
 
     headers = {'Content-Type': 'application/json'}
-    print(webhook)
 
     try:
         r = requests.post(webhook, headers=headers, json=payload)
 
-        print(r.text)
-        print(r.status_code)
         if not r.ok:
             sentry_sdk.capture_message("Request couldnt be completed", "ERROR")
     except Exception as e:
@@ -81,6 +78,7 @@ def message_handler(log):
             webhook = get_system_webhook(system, "incoming")
             print(webhook)
             if webhook is not None:
+                print("Sending incoming request to system " + str(system) + " to webhook: " + str(webhook))
                 execute_request(log, webhook)
 
     # If it's an internal sent message
@@ -89,6 +87,7 @@ def message_handler(log):
             webhook = get_system_webhook(system, "outgoing")
             print(webhook)
             if webhook is not None:
+                print("Sending outgoin request to system " + str(system) + " to webhook: " + str(webhook))
                 execute_request(log, webhook)
 
 

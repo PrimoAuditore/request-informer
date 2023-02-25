@@ -61,7 +61,6 @@ jobs:
         with:
           args: apply -f parsed_manifest.yaml
     env:
-      ENV_REDIS_URL: ${{ secrets.ENV_REDIS_URL }}
       ENV_REDIS_HOST: ${{ secrets.ENV_REDIS_HOST }}
       ENV_REDIS_USERNAME: ${{ secrets.ENV_REDIS_USERNAME }}
       ENV_REDIS_PASSWORD: ${{ secrets.ENV_REDIS_PASSWORD }}

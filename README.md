@@ -10,8 +10,18 @@ be considered as an error.
 
 ### Set webhook
 
-To set the webhook you must set the path on a Redis key called:
+To set the webhook you must set the field on the hash:
+
 
 - KEY = system-webhook:{system-id}
-- VALUE = https://api.pescarauto.cl/systemxyz/webhook
 
+you can set the incoming/outgoing fields based on the message log origin
+
+
+### Systems IDS
+
+- 1 -> Whatsapp Manager
+- 2 -> Request Informer
+- 3 -> Whatsapp Workflow
+- 4 -> META API
+- 5 -> Request Classificator

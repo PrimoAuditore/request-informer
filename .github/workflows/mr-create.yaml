@@ -62,8 +62,11 @@ jobs:
           args: apply -f parsed_manifest.yaml
     env:
       ENV_REDIS_URL: ${{ secrets.ENV_REDIS_URL }}
-      ENV_RUST_LOG: ${{ secrets.ENV_RUST_LOG }}
-      ENV_META_TOKEN: ${{ secrets.ENV_META_TOKEN }}
+      ENV_REDIS_HOST: ${{ secrets.ENV_REDIS_HOST }}
+      ENV_REDIS_USERNAME: ${{ secrets.ENV_REDIS_USERNAME }}
+      ENV_REDIS_PASSWORD: ${{ secrets.ENV_REDIS_PASSWORD }}
+      ENV_REDIS_CHANNEL: ${{ secrets.ENV_REDIS_CHANNEL }}
+      ENV_SENTRY_DSN: ${{ secrets.ENV_SENTRY_DSN }}
       APP_PR: ${{github.event.pull_request.number}}
       APP_NAMESPACE: ${{ vars.APP_NAMESPACE }}
       APP_IMAGE: ${{ vars.APP_IMAGE }}

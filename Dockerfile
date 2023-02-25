@@ -5,7 +5,7 @@ ENV REDIS_USERNAME=""
 ENV REDIS_PASSWORD=""
 ENV REDIS_CHANNEL=""
 ENV SENTRY_TOKEN=""
-
+ENV PYTHONUNBUFFERED=1
 COPY . .
 RUN pip install -r requirements.txt
 CMD ["python", "main.py"]

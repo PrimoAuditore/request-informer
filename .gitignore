@@ -1,3 +1,1 @@
 k8s/secret.yaml
-
-{"timestamp": "1672789256364", "destination_systems": ["0"], "phone_number": "56936748406", "origin": "OUTGOING", "register_id": "outgoing-messages:56936748406:wamid.HBgLNTY5MzY3NDg0MDYVAgARGBIwNDQwODNENzQ2REFFRTEwOTYA"}

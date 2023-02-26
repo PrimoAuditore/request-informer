@@ -1,0 +1,1 @@
+export REDIS_USERNAME=default && export REDIS_PASSWORD=YSapXsE2qWYiE3f1UThOVfveQq7FSucQ && export REDIS_HOST=redis-18330.c289.us-west-1-2.ec2.cloud.redislabs.com && export REDIS_CHANNEL=whatsapp-notification:* && export SENTRY_DSN=https://5e71115a009b47faa6d8334321d401f2@o1166558.ingest.sentry.io/4504437620867072

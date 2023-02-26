@@ -24,6 +24,7 @@ class MessageLog:
     origin = "",
     register_id = "",
     destination_systems = []
+    origin_system = ""
 
 
 def get_redis_con():
@@ -52,13 +53,14 @@ def parse_log(json_log):
     log.phone_number = json_log["phone_number"]
     log.register_id = json_log["register_id"]
     log.destination_systems = json_log["destination_systems"]
+    log.origin_system = json_log["origin_system"]
 
     return log
 
 
 def execute_request(log, webhook):
     payload = {'origin': log.origin, 'timestamp': log.timestamp, 'destination_systems': log.destination_systems,
-               'phone_number': log.phone_number, 'register_id': log.register_id}
+               'phone_number': log.phone_number, 'register_id': log.register_id, 'origin_system': log.origin_system}
 
     headers = {'Content-Type': 'application/json'}
 
@@ -66,6 +68,8 @@ def execute_request(log, webhook):
         r = requests.post(webhook, headers=headers, json=payload)
 
         if not r.ok:
+            print(r.status_code)
+            print(r.text)
             sentry_sdk.capture_message("Request couldnt be completed", "ERROR")
     except Exception as e:
         sentry_sdk.capture_exception(e)
@@ -81,6 +85,8 @@ def message_handler(log):
             if webhook is not None:
                 print("Sending incoming request to system " + str(system) + " to webhook: " + str(webhook))
                 execute_request(log, webhook)
+            else:
+                print("No incoming webhook found for system " + str(system))
 
     # If it's an internal sent message
     elif log.origin == "OUTGOING":
@@ -90,6 +96,8 @@ def message_handler(log):
             if webhook is not None:
                 print("Sending outgoin request to system " + str(system) + " to webhook: " + str(webhook))
                 execute_request(log, webhook)
+            else:
+                print("No outgoing webhook found for system " + str(system))
 
 
 print("Initiating subscriber")
